@@ -1,13 +1,21 @@
 import sys
 import os
 from pathlib import Path
+import argparse
 
-p = Path('.')
-testing = open("kangewoon.java", "w")
-for i in p.glob('**/*.java'):
-    print(i.name)
-    if i.is_file():
-        print(i.absolute())
-        with open(i.absolute()) as file:
-            testing.write(i.name)
-            testing.write(file.read())
+parser = argparse.ArgumentParser(description="Gets the source code of provided extension from a directory.")
+parser.add_argument("directory", type=str)
+parser.add_argument("file_extension", type=str)
+
+args = parser.parse_args()
+if args.directory:
+    if args.file_extension:
+        directory = Path(args.directory).absolute()
+        with open(str(directory) + "/complete_source.txt", "w") as resulting_file:
+            for i in directory.glob('**/*' + args.file_extension):
+                if i.is_file():
+                    with open(i.absolute()) as file:
+                        resulting_file.write("Filename: " + i.name)
+                        resulting_file.write("\n\n")
+                        resulting_file.write(file.read())
+                        resulting_file.write("\n\n")
