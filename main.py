@@ -12,8 +12,11 @@ if args.directory:
     if args.file_extension:
         directory = Path(args.directory).absolute()
         with open(str(directory) + "/complete_source.txt", "w") as resulting_file:
+            # Iterate over any file with the extension
             for i in directory.glob('**/*' + args.file_extension):
+                # Make sure the file is a normal file not a dir or device file.
                 if i.is_file():
+                    # Here we open the file and read from it and write to the resulting file.
                     with open(i.absolute()) as file:
                         resulting_file.write("Filename: " + i.name)
                         resulting_file.write("\n\n")
